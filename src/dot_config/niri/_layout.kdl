@@ -36,8 +36,8 @@ layout {
     shadow {
         on
         softness 12
-        spread 2
-        offset x=0 y=2
+        spread 4
+        offset x=0 y=0
     }
 
     struts {
