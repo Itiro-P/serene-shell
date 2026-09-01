@@ -9,5 +9,4 @@ yay -S --needed --noconfirm \
     anki \
     kana \
     loupe \
-    catfish \
-    nautilus-code
+    catfish

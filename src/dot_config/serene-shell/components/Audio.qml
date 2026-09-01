@@ -37,7 +37,7 @@ WrapperItem {
                 id: sinkRow
                 IconImage {
                     implicitWidth: Metrics.iconS
-                implicitHeight: Metrics.iconS
+                    implicitHeight: Metrics.iconS
                     source: `image://icon/${sinkIcon}`
                 }
                 StyledText {
@@ -64,7 +64,7 @@ WrapperItem {
                 id: sourceRow
                 IconImage {
                     implicitWidth: Metrics.iconS
-                implicitHeight: Metrics.iconS
+                    implicitHeight: Metrics.iconS
                     source: `image://icon/${sourceIcon}`
                 }
                 StyledText {
@@ -86,7 +86,7 @@ WrapperItem {
 
         WrapperMouseArea {
             cursorShape: Qt.PointingHandCursor
-            onClicked: Quickshell.execDetached(["pavucontrol-qt"])
+            onClicked: Quickshell.execDetached(["pwvucontrol"])
             IconImage {
                 implicitWidth: Metrics.iconS
                 implicitHeight: Metrics.iconS

@@ -13,4 +13,4 @@ yay -S --needed --noconfirm \
     wlsunset \
     wev \
     network-manager-applet \
-    pavucontrol-qt
+    pwvucontrol

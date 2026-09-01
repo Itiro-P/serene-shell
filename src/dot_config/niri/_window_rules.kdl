@@ -35,6 +35,7 @@ window-rule {
     match app-id=r#"org.pulseaudio.pavucontrol$"#
     match app-id=r#"Import Savegames$"#
     match app-id=r#"qalculate-gtk$"#
+    match app-id=r#"com.saivert.pwvucontrol$"#
     match app-id=r#"nwg-look$"#
     match title=r#"Clonar repositório — Gittyup$"#
     match title=r#"^Todos os arquivos$"#

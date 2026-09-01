@@ -6,5 +6,6 @@ spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPL
 spawn-at-startup "gnome-keyring-daemon" "--start" "--components=secrets"
 spawn-at-startup "shikane"
 spawn-at-startup "fcitx5 -d"
+spawn-at-startup "thunar --daemon"
 spawn-at-startup "nm-applet"
-spawn-sh-at-startup "qs -p ~/.config/serene-shell/serene-shell.qml"
+spawn-sh-at-startup "qs -d -p ~/.config/serene-shell/serene-shell.qml"

@@ -9,8 +9,8 @@ layout {
     default-column-display "tabbed"
 
     tab-indicator {
-        width 6
-        gap 4
+        width 8
+        gap 6
         hide-when-single-tab
         place-within-column
     }
@@ -30,20 +30,20 @@ layout {
 
     border {
         on
-        width 1
+        width 2
     }
 
     shadow {
         on
         softness 12
-        spread 6
-        offset x=0 y=4
+        spread 2
+        offset x=0 y=2
     }
 
     struts {
-        left 4
-        right 4
-        top 4
-        bottom 4
+        left 8
+        right 8
+        top 8
+        bottom 8
     }
 }
