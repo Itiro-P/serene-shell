@@ -24,7 +24,7 @@ WrapperItem {
         StyledText {
             Layout.alignment: Qt.AlignVCenter
             text: OsdSignals.message
-            font.pixelSize: Metrics.fontTitleMedium
+            font.pixelSize: Metrics.fontL
         }
     }
 }

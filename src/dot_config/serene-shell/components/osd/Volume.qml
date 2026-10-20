@@ -9,42 +9,45 @@ import qs.styles
 WrapperItem {
     id: root
 
-    topMargin: Metrics.paddingM
-    bottomMargin: Metrics.paddingM
+    leftMargin: Metrics.paddingM
 
-    ColumnLayout {
+    RowLayout {
         spacing: Metrics.spacingS
 
-        IconImage {
-            implicitSize: Metrics.iconL
-            Layout.alignment: Qt.AlignHCenter
+        StyledIcon {
+            size: Metrics.iconL
             source: Quickshell.iconPath(OsdSignals.iconName)
+            Layout.alignment: Qt.AlignVCenter
+            color: Colors.md3.primary
         }
-        
+
         Text {
             text: `${Math.round(OsdSignals.value * 100)}%`
             font.pixelSize: Metrics.fontS
             font.bold: true
             color: Colors.md3.primary
-            Layout.alignment: Qt.AlignHCenter
+            Layout.alignment: Qt.AlignVCenter
         }
+
         Rectangle {
-            implicitWidth: 12
-            implicitHeight: 200
+            implicitWidth: 200
+            implicitHeight: 12
             radius: Metrics.radiusL
             color: Colors.md3.on_primary
-            Layout.alignment: Qt.AlignHCenter
+            Layout.alignment: Qt.AlignVCenter
 
             Rectangle {
                 anchors {
                     left: parent.left
+                    top: parent.top
                     bottom: parent.bottom
-                    right: parent.right
                 }
 
-                implicitHeight: parent.height * OsdSignals.value
+                width: parent.width * Math.max(0, Math.min(1, OsdSignals.value))
                 radius: parent.radius
                 color: Colors.md3.primary
+
+                Behavior on width { NumberAnimation { duration: 100 } }
             }
         }
     }

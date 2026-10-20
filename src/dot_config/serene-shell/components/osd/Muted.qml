@@ -9,30 +9,22 @@ import qs.styles
 WrapperItem {
     id: root
 
-    topMargin: Metrics.paddingM
-    bottomMargin: Metrics.paddingM
+    leftMargin: Metrics.paddingM
 
-    ColumnLayout {
+    RowLayout {
         spacing: Metrics.spacingS
 
-        IconImage {
-            implicitSize: Metrics.iconL
-            Layout.alignment: Qt.AlignHCenter
+        StyledIcon {
+            size: Metrics.iconL
             source: Quickshell.iconPath(OsdSignals.iconName)
+            Layout.alignment: Qt.AlignVCenter
+            color: Colors.md3.primary
         }
 
-        Item {
-            Layout.alignment: Qt.AlignHCenter
-            implicitWidth: osdText.implicitHeight
-            implicitHeight: osdText.implicitWidth
-
-            StyledText {
-                id: osdText
-                anchors.centerIn: parent
-                text: OsdSignals.message
-                font.pixelSize: Metrics.fontL
-                rotation: 90
-            }
+        StyledText {
+            Layout.alignment: Qt.AlignVCenter
+            text: OsdSignals.message
+            font.pixelSize: Metrics.fontL
         }
     }
 }

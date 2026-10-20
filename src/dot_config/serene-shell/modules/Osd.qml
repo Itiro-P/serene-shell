@@ -8,43 +8,60 @@ import qs.services
 import qs.components.osd
 import qs.styles
 
-LazyLoader {
+Scope {
     id: root
-    active: OsdSignals.visible
 
-    PanelWindow {
-        WlrLayershell.layer: WlrLayer.Overlay
-        anchors {
-            left: true
+    property real progress: OsdSignals.visible ? 1 : 0
+
+    Behavior on progress {
+        NumberAnimation {
+            duration: 240
+            easing.type: OsdSignals.visible ? Easing.OutCubic : Easing.InCubic
         }
-        exclusiveZone: 0
+    }
 
-        implicitWidth: wrapper.implicitWidth
-        implicitHeight: wrapper.implicitHeight
+    LazyLoader {
+        active: OsdSignals.visible || root.progress > 0
 
-        color: "transparent"
-        mask: Region {}
+        PanelWindow {
+            WlrLayershell.layer: WlrLayer.Overlay
+            anchors {
+                top: true
+            }
+            exclusiveZone: 0
 
-        WrapperItem {
-            id: wrapper
+            implicitWidth: wrapper.implicitWidth
+            implicitHeight: wrapper.implicitHeight
 
-            StyledRect {
-                id: styledRect
-                radius: Metrics.radiusL * 2
+            color: "transparent"
+            mask: Region {}
 
-                implicitWidth: stack.currentItem ? stack.currentItem.implicitWidth + Metrics.paddingL : 60
-                implicitHeight: stack.currentItem ? stack.currentItem.implicitHeight + Metrics.paddingL : 240
+            WrapperItem {
+                id: wrapper
 
-                StackLayout {
-                    id: stack
-                    anchors.fill: parent
-                    currentIndex: OsdSignals.kind
+                opacity: root.progress
+                transform: Translate {
+                    y: -wrapper.height * (1 - root.progress)
+                }
 
-                    readonly property Item currentItem: children[currentIndex]
+                StyledRect {
+                    id: styledRect
+                    radius: Metrics.radiusL * 2
 
-                    Volume {}
-                    Muted {}
-                    Stasis {}
+                    implicitWidth: stack.currentItem ? stack.currentItem.implicitWidth + Metrics.paddingL : 240
+                    implicitHeight: stack.currentItem ? stack.currentItem.implicitHeight + Metrics.paddingL : 60
+
+                    StackLayout {
+                        id: stack
+                        anchors.fill: parent
+                        currentIndex: OsdSignals.kind
+
+                        readonly property Item currentItem: children[currentIndex]
+
+                        Volume {}
+                        Muted {}
+                        StasisOsd {}
+                    }
                 }
             }
         }
