@@ -4,7 +4,17 @@ import Quickshell
 import QtQuick
 
 Singleton {
-    property bool launcherOpen: false
-    property bool logoutOpen: false
-    property bool wallpaperSelectorOpen: false
+    id: root
+
+    enum Opened { Launcher, Logout, WallpaperSelector, None }
+
+    property int currentState: States.None
+
+    readonly property bool launcherOpen: currentState === States.Launcher
+    readonly property bool logoutOpen: currentState === States.Logout
+    readonly property bool wallpaperSelectorOpen: currentState === States.WallpaperSelector
+
+    function clear() { currentState = States.None }
+    function set(state) { currentState = state }
+    function toggle(state) { currentState = (currentState === state) ? States.None : state }
 }

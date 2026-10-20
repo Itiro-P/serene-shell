@@ -13,12 +13,13 @@ Singleton {
         p => p?.isPlaying || p.playbackState === MprisPlaybackState.Paused
     ) ?? null
 
+    readonly property bool isPlaying: player?.playbackState === MprisPlaybackState.Playing ?? false
     readonly property int playbackState: player?.playbackState ?? MprisPlaybackState.Stopped
     readonly property string playbackStateString: MprisPlaybackState.toString(playbackState)
     readonly property string title: player?.trackTitle || "Unknown Title"
     readonly property string artist: player?.trackArtist || "Unknown Artist"
-    readonly property real position: player?.position ?? 0
-    readonly property real length: player?.length ?? 0
+    readonly property real position: player?.position || 0
+    readonly property real length: player?.length || 0
 
     FrameAnimation {
         running: player?.isPlaying || false

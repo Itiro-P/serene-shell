@@ -1,0 +1,119 @@
+# Maintainer: Pedro
+pkgbase=serene-meta
+pkgname=(
+  serene-cli serene-system serene-hardware serene-desktop serene-theme
+  serene-fonts serene-apps serene-gaming serene-dev serene-java
+)
+pkgver=1
+pkgrel=1
+arch=('any')
+license=('MIT')
+
+package_serene-cli() {
+  pkgdesc="CLI tools and shell utilities"
+  depends=(
+    7zip unrar unzip zip lzip
+    btop fastfetch nvtop starship tree lstree jq less wget nmap
+    git github-cli
+    man-db man-pages
+    nano neovim neovim-lspconfig
+    pacman-contrib rebuild-detector downgrade
+  )
+}
+
+package_serene-system() {
+  pkgdesc="Filesystems, network, audio, printing and services"
+  depends=(
+    btrfs-progs dosfstools efibootmgr smartmontools fuse-overlayfs zram-generator
+    ufw openssh openvpn zerotier-one
+    bluez-utils evtest packagekit
+    cups cups-pk-helper system-config-printer
+    alsa-utils pipewire-alsa pipewire-jack pipewire-pulse
+    gst-plugin-pipewire gst-plugins-ugly
+  )
+}
+
+package_serene-hardware() {
+  pkgdesc="Drivers, firmware and power management (machine-specific)"
+  depends=(
+    amd-ucode sof-firmware
+    mesa lib32-mesa-utils vulkan-radeon lib32-vulkan-radeon
+    nvidia-open nvidia-utils nvidia-prime libva-nvidia-driver
+    linuwu-sense-dkms tlp-pd upower ddcutil
+  )
+}
+
+package_serene-desktop() {
+  pkgdesc="Niri + Quickshell Wayland desktop"
+  depends=(
+    niri niri-focused-booster qml-niri quickshell xwayland-satellite
+    awww stasis shikane
+    grim slurp wl-clipboard wl-mirror wlsunset wev playerctl brightnessctl
+    network-manager-applet overskride pavucontrol
+    kitty
+    fcitx5 fcitx5-configtool fcitx5-gtk fcitx5-qt
+    gnome-keyring seahorse xdg-utils xdg-desktop-portal-gnome archlinux-xdg-menu
+    sddm-astronaut-theme sddm-conf-git
+  )
+}
+
+package_serene-theme() {
+  pkgdesc="GTK/Qt themes, icons, cursors and color generation"
+  depends=(
+    adw-gtk-theme kvantum qt6ct-kde nwg-look
+    papirus-icon-theme tela-circle-icon-theme-standard bibata-cursor-theme-bin
+    matugen-bin fcitx5-material-color
+  )
+}
+
+package_serene-fonts() {
+  pkgdesc="Fonts"
+  depends=(
+    inter-font otf-monaspace ttf-jetbrains-mono
+    noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
+  )
+}
+
+package_serene-apps() {
+    pkgdesc="Desktop applications"
+    depends=(
+        firefox vesktop
+        dolphin udisks2 gvfs
+        loupe mpv vlc obs-studio cava
+        libreoffice-fresh libreoffice-codehighlighter2
+        qalculate-gtk gnome-clocks planify transmission-gtk
+        mendeley-reference-manager limusic-bin lm-studio-bin
+        visual-studio-code-bin appimagelauncher
+    )
+}
+
+package_serene-gaming() {
+  pkgdesc="Games, launchers and compatibility layers"
+  depends=(
+    steam wine gamemode gamescope mangohud lib32-mangohud mangojuice
+    proton-ge-custom-bin protonup-qt
+    heroic-games-launcher-bin hydra-launcher-bin
+    creamlinux-installer-bin pdx-unlimiter osmium
+  )
+}
+
+package_serene-dev() {
+  pkgdesc="Compilers, build tools, languages and containers"
+  depends=(
+    base-devel clang llvm cmake extra-cmake-modules
+    corrosion vulkan-headers
+    go rustup cargo-generate
+    npm pnpm yarn dart-sass sassc
+    pypy python-pip python-pipx python-pandas
+    docker docker-buildx docker-compose nvidia-container-toolkit
+    gitte
+  )
+}
+
+package_serene-java() {
+  pkgdesc="JDKs and Java build tools"
+  depends=(
+    jdk8-openjdk jdk11-openjdk jdk-openjdk jdk21-openjdk jdk25-openjdk
+    archlinux-java-run maven gradle junit
+  )
+}

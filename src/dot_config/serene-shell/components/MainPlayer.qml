@@ -9,54 +9,58 @@ import qs.styles
 Item {
     id: root
     visible: Mpris.player != null
-    
-    implicitWidth: row.implicitWidth
-    implicitHeight: row.implicitHeight
+    implicitWidth: stack.implicitWidth
+    implicitHeight: stack.implicitHeight
 
+    HoverHandler {
+        id: hover
+    }
 
-
-    RowLayout {
-        id: row
-        anchors.centerIn: parent
-        spacing: Metrics.spacingS
-
-        WrapperMouseArea {
-            IconImage {
-                implicitWidth: 16
-                implicitHeight: 16
-                source: Quickshell.iconPath("media-skip-backward-symbolic")
-            }
-            cursorShape: Qt.PointingHandCursor
-            onClicked: Mpris.previous()
+    StackLayout {
+        id: stack
+        currentIndex: hover.hovered
+        
+        StyledText {
+            font.pixelSize: Metrics.fontM
+            text: `${Utils.limitString(Mpris.title, 20)} - ${Utils.limitString(Mpris.artist, 20)}`
         }
 
-        WrapperMouseArea {
-            RowLayout {
-                anchors.fill: parent
-                spacing: Metrics.spacingS
+        RowLayout {
+            spacing: Metrics.spacingM
 
-                IconImage {
-                    implicitWidth: 16
-                    implicitHeight: 16
-                    source: Quickshell.iconPath(Mpris.player?.isPlaying ? "media-playback-pause-symbolic": "media-playback-start-symbolic")
-                }
-                StyledText {
-                    font.pixelSize: Metrics.fontM
-                    text: `${Utils.limitString(Mpris.title, 20)} - ${Utils.limitString(Mpris.artist, 20)}`
+            WrapperMouseArea {
+                cursorShape: Qt.PointingHandCursor
+                onClicked: Mpris.previous()
+
+                StyledIcon {
+                    size: Metrics.iconS
+                    source: Quickshell.iconPath("media-skip-backward-symbolic")
                 }
             }
-            cursorShape: Qt.PointingHandCursor
-            onClicked: Mpris.togglePlaying()
-        }
 
-        WrapperMouseArea {
-            IconImage {
-                implicitWidth: 16
-                implicitHeight: 16
-                source: Quickshell.iconPath("media-skip-forward-symbolic")
+            WrapperMouseArea {
+                cursorShape: Qt.PointingHandCursor
+                onClicked: Mpris.togglePlaying()
+
+                StyledIcon {
+                    size: Metrics.iconS
+                    source: Quickshell.iconPath(`media-playback-${Mpris.isPlaying ? "pause" : "start"}-symbolic`)
+                }
             }
-            cursorShape: Qt.PointingHandCursor
-            onClicked: Mpris.next()
+
+            WrapperMouseArea {
+                cursorShape: Qt.PointingHandCursor
+                onClicked: Mpris.next()
+
+                StyledIcon {
+                    size: Metrics.iconS
+                    source: Quickshell.iconPath("media-skip-forward-symbolic")
+                }
+            }
+
+            StyledText {
+                text: `${Utils.formatSeconds(Mpris.position)} - ${Utils.formatSeconds(Mpris.length)}`
+            }
         }
     }
 }

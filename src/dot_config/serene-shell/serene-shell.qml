@@ -17,7 +17,7 @@ ShellRoot {
         target: "launcher"
 
         function toggle() {
-            States.launcherOpen ^= 1
+            States.toggle(States.Opened.Launcher);
         }
     }
 
@@ -25,7 +25,7 @@ ShellRoot {
         target: "logout"
 
         function toggle() {
-            States.logoutOpen ^= 1
+            States.toggle(States.Opened.Logout);
         }
     }
 
@@ -62,7 +62,7 @@ ShellRoot {
         target: "wallpaperSelector"
 
         function toggle() {
-            States.wallpaperSelectorOpen ^= 1
+            States.toggle(States.Opened.WallpaperSelector);
         }
     }
 

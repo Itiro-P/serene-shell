@@ -1,40 +1,34 @@
 import Quickshell
 import QtQuick
+import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell.Widgets
-import Quickshell.Wayland
-import Quickshell.WindowManager
 
+import qs.services
 import qs.styles
 
-WrapperRectangle {
+WrapperMouseArea {
     id: root
-    required property QtObject rootBar
-    required property var workspace
-    
-    color: Colors.md3.surface_variant
-    radius: Metrics.radiusL
 
-    ScriptModel {
-        id: clients
-        values: ToplevelManager.toplevels.values.filter(w => w.parent == null && w.screens.includes(rootBar.screen))
-    }
+    required property var model
+    property bool isActive: model.isActive || containsMouse
 
-    RowLayout {
-        spacing: Metrics.spacingS
+    hoverEnabled: true
+    cursorShape: Qt.PointingHandCursor
+    onClicked: Niri.focusWorkspaceById(model.id)
 
-        Repeater {
-            model: clients
-            delegate: WrapperMouseArea {
-                cursorShape: Qt.PointingHandCursor
-                onClicked: modelData.activate()
+    Rectangle {
+        implicitHeight: Metrics.iconS
+        implicitWidth: Metrics.iconS * (root.isActive ? 1.4 : 1)
+        radius: implicitHeight / 2
+        color: root.isActive ? Colors.md3.primary : Colors.md3.surface_variant
 
-                IconImage {
-                    source: Quickshell.iconPath(DesktopEntries.heuristicLookup(modelData.appId)?.icon ?? "applications-other-symbolic")
-                    implicitWidth: Metrics.iconS
-                    implicitHeight: Metrics.iconS
-                }
-            }
+        Behavior on implicitWidth {
+            NumberAnimation { duration: 200; easing.type: Easing.OutCubic }
+        }
+
+        Behavior on color {
+            ColorAnimation { duration: 150 }
         }
     }
 }

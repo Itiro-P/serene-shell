@@ -32,7 +32,7 @@ Singleton {
 
     Timer {
         id: hideTimer
-        interval: 2000
+        interval: 1600
         onTriggered: visible = false
     }
 
@@ -48,17 +48,17 @@ Singleton {
         target: Pipewire.defaultAudioSink?.audio || null
 
         function onVolumeChanged() {
-            let audio = Pipewire.defaultAudioSink.audio
+            let audio = Pipewire.defaultAudioSink?.audio
             let vol = audio.volume
-            let icon = (audio.muted || vol === 0) ? "audio-volume-muted-symbolic" : "audio-volume-high-symbolic"
+            let icon = Utils.getNodeIcon(audio, "audio-volume")
             show(OsdSignals.Kind.Volume, icon, vol, "")
         }
 
         function onMutedChanged() {
             let audio = Pipewire.defaultAudioSink.audio
             let isMuted = audio.muted
-            let vol = isMuted ? 0 : audio.volume
-            let icon = isMuted ? "audio-volume-muted-symbolic" : "audio-volume-high-symbolic"
+            let vol = audio.volume
+            let icon = Utils.getNodeIcon(audio, "audio-volume")
             show(OsdSignals.Kind.Muted, icon, vol, `Saída ${isMuted ? "sem" : "com"} áudio`)
         }
     }
@@ -67,9 +67,9 @@ Singleton {
         target: Pipewire.defaultAudioSource?.audio || null
 
         function onVolumeChanged() {
-            let audio = Pipewire.defaultAudioSource.audio
+            let audio = Pipewire.defaultAudioSource?.audio
             let vol = audio.volume
-            let icon = (audio.muted || vol === 0) ? "mic-volume-muted-symbolic" : "mic-volume-high-symbolic"
+            let icon = Utils.getNodeIcon(audio, "microphone-sensitivity")
             show(OsdSignals.Kind.Volume, icon, vol, "")
         }
 
@@ -77,7 +77,7 @@ Singleton {
             let audio = Pipewire.defaultAudioSource.audio
             let isMuted = audio.muted
             let vol = isMuted ? 0 : audio.volume
-            let icon = isMuted ? "mic-volume-muted-symbolic" : "mic-volume-high-symbolic"
+            let icon = Utils.getNodeIcon(audio, "microphone-sensitivity")
             show(OsdSignals.Kind.Muted, icon, vol, `Entrada ${isMuted ? "sem" : "com"} áudio`)
         }
     }
@@ -85,9 +85,22 @@ Singleton {
     Connections {
         target: Stasis
 
-        function onPausedChanged() {
-            let isPaused = Stasis.paused
-            show(OsdSignals.Kind.Stasis, "clock-applet-symbolic", 0, `Inatividade ${isPaused ? "des" : ""}ativada`)
+        function onInhibitedChanged() {
+            if (!Stasis.running) return
+            const on = Stasis.inhibited
+            show(OsdSignals.Kind.Stasis,
+                on ? "view-reveal-symbolic" : "view-conceal-symbolic",
+                0,
+                on ? "Inatividade bloqueada" : "Inatividade liberada")
+        }
+
+        function onManuallyPausedChanged() {
+            if (!Stasis.running) return
+            const paused = Stasis.manuallyPaused
+            show(OsdSignals.Kind.Stasis,
+                paused ? "media-playback-pause-symbolic" : "media-playback-start-symbolic",
+                0,
+                `Inatividade ${paused ? "des" : ""}ativada`)
         }
     }
 }

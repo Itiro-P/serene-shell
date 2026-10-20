@@ -5,13 +5,14 @@ import Quickshell.Widgets
 import Quickshell.Services.Pipewire
 
 import qs.styles
+import qs.services
 
 WrapperItem {
     id: root
     property PwNode defaultSink: Pipewire.defaultAudioSink
     property PwNode defaultSource: Pipewire.defaultAudioSource
-    property string sinkIcon: (defaultSink?.audio?.muted ?? true) ? "audio-volume-muted-symbolic" : "audio-volume-high-symbolic"
-    property string sourceIcon: (defaultSource?.audio?.muted ?? true) ? "mic-volume-muted-symbolic" : "mic-volume-high-symbolic"
+    property string sinkIcon: Utils.getNodeIcon(defaultSink?.audio, "audio-volume")
+    property string sourceIcon: Utils.getNodeIcon(defaultSource?.audio, "microphone-sensitivity")
 
     PwObjectTracker {
         objects: [
@@ -32,13 +33,14 @@ WrapperItem {
         WrapperMouseArea {
             id: sinkItem
             onClicked: toggleMute(defaultSink?.audio)
+            cursorShape: Qt.PointingHandCursor
 
             RowLayout {
                 id: sinkRow
-                IconImage {
-                    implicitWidth: Metrics.iconS
-                    implicitHeight: Metrics.iconS
+                StyledIcon {
+                    size: Metrics.iconS
                     source: `image://icon/${sinkIcon}`
+                    color: Colors.md3.primary
                 }
                 StyledText {
                     font.pixelSize: Metrics.fontM
@@ -59,13 +61,14 @@ WrapperItem {
         WrapperMouseArea {
             id: sourceItem
             onClicked: toggleMute(defaultSource?.audio)
+            cursorShape: Qt.PointingHandCursor
 
             RowLayout {
                 id: sourceRow
-                IconImage {
-                    implicitWidth: Metrics.iconS
-                    implicitHeight: Metrics.iconS
+                StyledIcon {
+                    size: Metrics.iconS
                     source: `image://icon/${sourceIcon}`
+                    color: Colors.md3.primary
                 }
                 StyledText {
                     font.pixelSize: Metrics.fontM
@@ -86,7 +89,7 @@ WrapperItem {
 
         WrapperMouseArea {
             cursorShape: Qt.PointingHandCursor
-            onClicked: Quickshell.execDetached(["pwvucontrol"])
+            onClicked: Quickshell.execDetached(["pavucontrol"])
             IconImage {
                 implicitWidth: Metrics.iconS
                 implicitHeight: Metrics.iconS

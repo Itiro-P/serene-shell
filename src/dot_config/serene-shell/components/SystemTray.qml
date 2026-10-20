@@ -1,7 +1,5 @@
 import Quickshell
-import Quickshell.Io
 import QtQuick
-import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell.Services.SystemTray
 import Quickshell.Widgets
@@ -9,6 +7,11 @@ import Quickshell.Widgets
 RowLayout {
     id: root
     required property QtObject rootBar
+
+    TrayMenu {
+        id: trayMenu
+        rootBar: root.rootBar
+    }
 
     Repeater {
         model: SystemTray.items
@@ -20,22 +23,17 @@ RowLayout {
             cursorShape: Qt.PointingHandCursor
             acceptedButtons: Qt.LeftButton | Qt.RightButton
             hoverEnabled: true
-            
             onClicked: mouse => {
                 if (mouse.button === Qt.LeftButton) {
                     modelData.activate();
                 } else if (mouse.button === Qt.RightButton) {
                     if (modelData.hasMenu) {
-                        modelData.display(rootBar, 0, 0);
+                        trayMenu.openFor(trayItem, modelData.menu);
                     } else {
                         modelData.secondaryActivate();
                     }
                 }
             }
-
-            //ToolTip.visible: containsMouse
-            //ToolTip.delay: Application.styleHints.mousePressAndHoldInterval
-            //ToolTip.text: modelData.tooltipTitle || modelData.title || ""
 
             IconImage {
                 anchors.centerIn: parent

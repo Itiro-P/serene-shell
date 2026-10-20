@@ -10,67 +10,89 @@ import qs.services
 import qs.components
 import qs.styles
 
-LazyLoader {
-    active: States.wallpaperSelectorOpen
+Scope {
+    id: root
+    property real progress: States.wallpaperSelectorOpen ? 1 : 0
 
-    PanelWindow {
-        id: selectorWIndow
-        WlrLayershell.layer: WlrLayer.Overlay
-
-        anchors {
-            top: true
-            bottom: true
-            left: true
-            right: true
+    Behavior on progress {
+        NumberAnimation {
+            duration: 120
+            easing.type: States.wallpaperSelectorOpen ? Easing.InCubic : Easing.OutCubic
         }
+    }
 
-        color: "transparent"
-        aboveWindows: true 
-        focusable: true
+    LazyLoader {
+        active: States.wallpaperSelectorOpen || root.progress > 0
 
-        MouseArea {
-            anchors.fill: parent
-            onClicked: States.wallpaperSelectorOpen = false
-        }
+        PanelWindow {
+            id: selectorWindow
+            WlrLayershell.layer: WlrLayer.Overlay
 
-        Shortcut {
-            sequence: "Escape"
-            onActivated: States.wallpaperSelectorOpen = false
-        }
+            anchors {
+                top: true
+                bottom: true
+                left: true
+                right: true
+            }
 
-        Rectangle {
-            anchors.bottom: parent.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-            color: Colors.md3.surface
-            implicitHeight: Metrics.imagePreviewHeight + (Metrics.paddingS * 2)
-            implicitWidth: Metrics.imagePreviewWidth * 5 + Metrics.paddingL
-            radius: Metrics.radiusL
+            color: "transparent"
+            aboveWindows: true 
+            focusable: true
 
             MouseArea {
                 anchors.fill: parent
-                onClicked: {}
+                onClicked: States.clear()
             }
 
-            RowLayout {
-                anchors.fill: parent
-                anchors.margins: Metrics.paddingS
+            Shortcut {
+                sequence: "Escape"
+                onActivated: States.clear()
+            }
+
+            Rectangle {
+                id: content
+                anchors.bottom: parent.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
+                color: Colors.md3.surface
                 
-                ListView {
-                    id: resultsList
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: Metrics.imagePreviewHeight
-                    orientation: ListView.Horizontal
-                    spacing: Metrics.spacingS
-                    clip: true
-                    model: Awww.wallpapers
-                    keyNavigationEnabled: true
-                    Keys.onReturnPressed: {
-                        if (currentItem) {
-                            States.wallpaperSelectorOpen = false
-                            Awww.apply(screen.name, currentItem.modelData.filePath)
+                implicitHeight: Metrics.imagePreviewHeight + (Metrics.paddingS * 2)
+                implicitWidth: Metrics.imagePreviewWidth * 5 + Metrics.paddingL
+                
+                radius: Metrics.radiusL
+                
+                opacity: root.progress
+                transform: Translate {
+                    y: content.height * (1 - root.progress)
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {} // Impede o fechamento ao clicar no painel
+                }
+
+                RowLayout {
+                    anchors.fill: parent
+                    anchors.margins: Metrics.paddingS
+                    
+                    ListView {
+                        id: resultsList
+                        focus: true // Garante o recebimento de eventos de teclado
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: Metrics.imagePreviewHeight
+                        orientation: ListView.Horizontal
+                        spacing: Metrics.spacingS
+                        clip: true
+                        model: Awww.wallpapers
+                        keyNavigationEnabled: true
+                        
+                        Keys.onReturnPressed: {
+                            if (currentItem) {
+                                States.clear();
+                                Awww.apply(screen.name, currentItem.modelData.filePath);
+                            }
                         }
+                        delegate: WallpaperPreview { output: screen.name }
                     }
-                    delegate: WallpaperPreview { output: screen.name }
                 }
             }
         }

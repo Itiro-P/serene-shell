@@ -25,4 +25,21 @@ Singleton {
         const lastSpace = cut.lastIndexOf(" ");
         return (lastSpace > 0 ? cut.slice(0, lastSpace) : cut) + "...";
     }
+
+    function getNodeIcon(node, prefix) {
+        let icon_level = "muted"
+        if (node?.muted ?? true) return `${prefix}-${icon_level}-symbolic`;
+
+        if (node.volume <= 0.0) {
+            icon_level = "muted"
+        } else if (node.volume < 0.5) {
+            icon_level = "low"
+        } else if (node.volume < 0.75) {
+            icon_level = "medium"
+        } else {
+            icon_level = "high"
+        }
+
+        return `${prefix}-${icon_level}-symbolic`;
+    }
 }

@@ -1,10 +1,6 @@
 import Quickshell
 import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
-import QtQuick.Effects
 import Quickshell.Services.UPower
-import Quickshell.Widgets
 
 import qs.styles
 import qs.services
@@ -24,21 +20,24 @@ Rectangle {
     readonly property string batteryState: battery.state == UPowerDeviceState.FullyCharged ? "Full" : timeToEmpty.length > 0 ? timeToEmpty : timeToFull
     readonly property int percentage: Math.round(battery.percentage * 100)
 
-    readonly property string levelIconName: {
-        if (percentage >= 90) return "full"
-        if (percentage >= 60) return "good"
-        if (percentage >= 30) return "low"
-        if (percentage >= 15) return "caution"
-        return "empty"
-    }
+    // 0, 10, 20 ... 100 (arredonda para baixo para não superestimar a carga)
+    readonly property int level: Math.floor(percentage / 10) * 10
 
     readonly property string stateIconName: {
         switch (battery.state) {
-            case UPowerDeviceState.Charging: return `battery-${levelIconName}-charging-symbolic`
-            case UPowerDeviceState.FullyCharged: return "battery-full-charged-symbolic"
-            case UPowerDeviceState.PendingCharge: return `battery-${levelIconName}-symbolic`
-            case UPowerDeviceState.PendingDischarge: return `battery-${levelIconName}-symbolic`
-            default: return ""
+        case UPowerDeviceState.Charging:
+            return `battery-level-${level}-charging-symbolic`
+        case UPowerDeviceState.FullyCharged:
+            return "battery-level-100-charged-symbolic"
+        case UPowerDeviceState.PendingCharge:
+            return `battery-level-${level}-plugged-in-symbolic`
+        case UPowerDeviceState.Discharging:
+        case UPowerDeviceState.PendingDischarge:
+            return `battery-level-${level}-symbolic`
+        case UPowerDeviceState.Empty:
+            return "battery-level-0-symbolic"
+        default:
+            return "abattery-missing-symbolic"
         }
     }
 
@@ -47,33 +46,18 @@ Rectangle {
         anchors.centerIn: parent
         spacing: Metrics.spacingXs
 
-        Item {
-            id: iconContainer
-            implicitWidth: Metrics.iconS
-            implicitHeight: Metrics.iconS
+        StyledIcon {
+            size: Metrics.iconS
+            source: Quickshell.iconPath(root.stateIconName, true)
+            color: Colors.md3.primary
             anchors.verticalCenter: parent.verticalCenter
-
-            IconImage {
-                id: batteryIcon
-                anchors.fill: parent
-                source: Quickshell.iconPath(stateIconName, true)
-                visible: false
-            }
-
-            MultiEffect {
-                anchors.fill: batteryIcon
-                source: batteryIcon
-                colorization: 1.0
-                colorizationColor: Colors.md3.primary
-            }
         }
 
         Text {
             anchors.verticalCenter: parent.verticalCenter
-            text: `${percentage}%`
+            text: root.percentage + '%'
             color: Colors.md3.on_surface
-            font.pixelSize: Metrics.fontS
-            font.bold: true
+            font.pixelSize: Metrics.fontM
         }
     }
 }
