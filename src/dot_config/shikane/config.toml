@@ -72,7 +72,7 @@ exec = ["stasis profile presentation", "notify-send Shikane \"Profile $SHIKANE_P
     position = "0,0"
 
     [[profile.output]]
-    search = [ "v%Epson", "v%MS" ]
+    search = [ "v%Epson", "v%MS Telematica", "MStar" ]
     enable = true
     exec = ["wl-mirror --fullscreen-output $SHIKANE_OUTPUT_NAME eDP-1"]
     mode = "preferred"
