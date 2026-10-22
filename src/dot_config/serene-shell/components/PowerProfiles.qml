@@ -11,9 +11,24 @@ WrapperItem {
     id: root
 
     readonly property var profiles: [
-        { profile: PowerProfile.PowerSaver,  icon: "󰌪", bg: Colors.md3.secondary_container, fg: Colors.md3.on_secondary_container },
-        { profile: PowerProfile.Balanced,    icon: "󰗑", bg: Colors.md3.surface_container_high, fg: Colors.md3.on_surface_variant },
-        { profile: PowerProfile.Performance, icon: "󰓅", bg: Colors.md3.primary_container,   fg: Colors.md3.on_primary_container }
+        { 
+            profile: PowerProfile.PowerSaver,  
+            icon: "image://icon/power-profile-power-saver-symbolic", 
+            bg: Colors.md3.secondary_container, 
+            fg: Colors.md3.on_secondary_container 
+        },
+        { 
+            profile: PowerProfile.Balanced,    
+            icon: "image://icon/power-profile-balanced-symbolic",    
+            bg: Colors.md3.surface_container_high, 
+            fg: Colors.md3.on_surface_variant 
+        },
+        { 
+            profile: PowerProfile.Performance, 
+            icon: "image://icon/power-profile-performance-symbolic", 
+            bg: Colors.md3.primary_container,   
+            fg: Colors.md3.on_primary_container 
+        }
     ]
 
     readonly property int currentIndex: {
@@ -60,10 +75,11 @@ WrapperItem {
             Repeater {
                 model: root.profiles
 
-                delegate: StyledText {
+                delegate: StyledIcon {
                     required property var modelData
-                    text: modelData.icon
+                    source: modelData.icon
                     color: modelData.fg
+                    size: Metrics.iconS
                 }
             }
         }

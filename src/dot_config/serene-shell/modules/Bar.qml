@@ -65,7 +65,7 @@ PanelWindow {
 
             MainPlayer {}
             Time {}
-            //PowerProfiles {}
+            PowerProfiles {}
             InhibitIndicator{}
             Audio {}
             Battery {}
