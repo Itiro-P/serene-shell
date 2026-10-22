@@ -10,6 +10,7 @@ WrapperItem {
     id: root
 
     StyledText {
+        id: clockText
         font.pixelSize: Metrics.fontM
         text: `${Clock.time} ${Clock.date}`
     }
