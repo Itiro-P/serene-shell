@@ -36,6 +36,7 @@ echo "Configurando Stasis e Docker"
 sudo usermod -aG input,video,docker,gamemode "$USER"
 
 sudo systemctl enable sddm
+sudo systemctl enable docker.socket
 
 echo "Configurando temas e fontes GTK."
 gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'
